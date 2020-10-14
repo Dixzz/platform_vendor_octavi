@@ -5,6 +5,10 @@ ifndef OCTAVI_BUILD_TYPE
     OCTAVI_BUILD_TYPE := Unofficial
 endif
 
+ifndef OCTAVI_MAINTAINER
+    OCTAVI_MAINTAINER := Nobody
+endif
+
 ifneq ($(SIGNING_KEYS),)
     PRODUCT_DEFAULT_DEV_CERTIFICATE := $(SIGNING_KEYS)/releasekey
 endif
@@ -13,7 +17,7 @@ CURRENT_DEVICE := $(shell echo "$(TARGET_PRODUCT)" | cut -d'_' -f 2,3)
 LIST := $(shell cat vendor/octavi/octavi.devices)
 
 ifeq ($(filter $(CURRENT_DEVICE), $(LIST)), $(CURRENT_DEVICE))
-    ifeq ($(filter-out Officla OFFICIAL, $(OCTAVI_BUILD_TYPE)),)
+    ifeq ($(filter-out Official OFFICIAL, $(OCTAVI_BUILD_TYPE)),)
         ifeq ($(OCTAVI_BUILD_TYPE), Official)
           BUILD_TYPE := Official
         endif
@@ -37,4 +41,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
   ro.build.project=octavi \
   ro.octavi.version=$(OCTAVI_VERSION) \
   ro.octavi.status=$(OCTAVI_STATUS) \
-  ro.octavi.branding.version=$(OCTAVI_BRANDING_VERSION)
+  ro.octavi.branding.version=$(OCTAVI_BRANDING_VERSION) \
+  ro.octavi.maintainer=$(OCTAVI_MAINTAINER)
+
